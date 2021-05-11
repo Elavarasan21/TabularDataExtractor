@@ -1,0 +1,333 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet'/>
+<link href='https://fonts.googleapis.com/css?family=Alata' rel='stylesheet'/>
+<link href='https://fonts.googleapis.com/css?family=Baloo Bhai 2' rel='stylesheet'/>
+<link href='https://fonts.googleapis.com/css?family=Allerta' rel='stylesheet'/>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"/>
+<link href='https://fonts.googleapis.com/css?family=Playfair Display' rel='stylesheet'/>
+<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'/>
+<style>
+h3 {
+	font-size: 5vmin;
+	color:#057689;
+}
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px 0 0 20px;
+    font-size: 0.9em;
+    font-family: 'Montserrat';
+    width: 100%;
+    box-shadow: 0 0 20px grey;
+    border: 4px solid #57BC90;
+}
+.styled-table td {
+    padding: 12px 15px;
+}
+.styled-table tr{
+    border-bottom: 1px solid #009879;
+}
+.styled-table tr:hover,.styled-table tr:nth-of-type(even):hover{
+background-color:#57BC90;
+color:white;
+}
+p{
+text-align:center;
+font-size:3vmin;
+}
+div.tables-container{
+padding-left:50px;
+}
+.styled-table tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+.original_table_style{
+	margin: 25px 0 0 20px;
+    border: 3px solid #057689;
+}
+button{
+font-family: 'Montserrat';
+width:150px;
+color:white;
+}
+button.wide {
+	font-family: 'Montserrat';
+	width:200px;
+}
+button.add_or_remove{}
+input.add_or_remove{
+	width:25px;
+	height:25px;
+}
+ol.list{
+	height: 120px;
+    overflow:scroll;
+    -webkit-overflow-scrolling: touch;
+	font-family: 'Montserrat';
+}
+.tooltip-inner{
+  	 max-width: 100% !important;
+	 color:white;
+	 background-color:#057689;
+}
+.tooltip.right > .tooltip-arrow{
+	border-right-color:#057689;
+}
+span.fileName{
+	font-size:20px;
+	font-family: 'Montserrat';
+}
+.greenColor{
+background-color:#57BC90;
+color:white;
+border-color:#57BC90;
+}
+.blueColor{
+background-color:#057689;
+color:white;
+border-color:#057689;
+}
+.headFont{
+	font-family: 'Playfair Display';
+}
+.normalFont{
+	font-family: 'Montserrat';
+}
+.textBlue{
+color:#057689;
+}
+body{
+min-width:100%;
+overflow:auto;
+}
+</style>
+</head>
+<body>
+<center>
+<br/>
+<h3 class="headFont">OCR</h3>
+<br/>
+<br/>
+<div class="row">
+<div class="col-4"></div>
+<div class="col-4" >
+<form action="/upload_file" method="post" enctype="multipart/form-data" >
+<div class="upload" >
+  <div class="custom-file rounded">
+    <input type="file" class="custom-file-input" id="pdfile" name="pdfile" multiple="multiple"/>
+    <label class="custom-file-label normalFont" for="pdfile">Choose Files</label>
+  </div>
+  </div>
+<br/>
+<br/>
+<input type='text' name='page_no' placeholder="Page Numbers" autocomplete="off" class="color-tooltip rounded border normalFont" value='{{page_numbers}}' data-container="body" data-toggle="tooltip" data-placement="right" data-html="true" title="1 : 5 , 3 , 7-9 ; 2 : all &nbsp;&nbsp;&nbsp; Selects pg no 5,3,7,8,9 from 1st file and all pages from 2nd file<br/>1 : -3 ; 2 : 5- ; &nbsp;&nbsp;&nbsp;Selects pg no 1,2,3 from 1st file and 5th to last page in 2nd file"/><br/>
+<br/>
+<br/>
+<ol id="uploaded_files_list" class="list border border-secondary rounded">
+{% for pdf in uploaded_pdf_names %}
+<li>{{pdf}}</li>
+{%endfor%}
+</ol>
+<br/>
+<button id="upload-btn" type='submit' class='wide btn blueColor btn-lg '>
+<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-upload" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+  <path fill-rule="evenodd" d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
+</svg>
+ &nbsp;Upload
+</button>
+  <br/>
+  <br/>
+</form>
+<a href="/extract">
+<button id='extract-btn' class="wide btn btn-secondary btn-lg rounded" disabled="disabled">Extract</button>
+</a>&nbsp;
+<a href="/display">
+<button id='display-btn' class="wide btn btn-secondary btn-lg rounded" disabled="disabled">Display Tables</button>
+</a>
+</div>
+<div class="col-4" ></div>
+
+</div>
+</center>
+<br/>
+<br/>
+
+<!-- Display Section  -->
+
+{%if contain_tables%}
+<p class="text-success heasFont"><b>{{msg}}</b></p>
+<br/>
+<form action="/download" method="post">
+<div class="row">
+	{%for table_index in range(file_names|length)%}
+	<div class="row col-12" id="{{table_index}}">
+		<div class="col-12" style="padding-left:40px;">
+			<input type="checkbox"  checked="checked" id="_+{{table_index|string}}" class="add_or_remove"/>&nbsp;&nbsp;
+		<span class="text-primary fileName">File Name : </span><span class="text-success fileName">{{pdf_names[table_index]+" "}}</span> &nbsp;&nbsp;<span class="text-primary fileName">Page No : </span><span class="text-success fileName">{{(1+pg_nos[table_index])|string}}</span>
+		</div>
+		<div class="col-5">
+		<img class="original_table_style rounded-lg" src="{{url_for('send_image',file_name=file_names[table_index])}}" width="100%" />
+		</div>
+		<div class="col-1"></div>
+		<div class="col-6">
+		<table class="styled-table" width="100%" >
+		{% if table_index < tables|length %}
+		{% for row_index in range(tables[table_index]|length)%}
+		<tr>
+			{% for col_index in range(tables[table_index][row_index]|length)%}
+				
+				{% set cell_name=table_index|string+"-"+row_index|string+"-"+col_index|string %}
+				<td id='{{cell_name}}' contenteditable="true">
+				{{tables[table_index][row_index][col_index]}}
+				<input type="hidden" name='{{cell_name}}'  value='{{tables[table_index][row_index][col_index]}}' />
+				</td>
+			{% endfor %}
+		</tr>
+		{% endfor %}
+		{% endif %}
+		</table>
+		<br/>
+		<div class="row justify-content-end" >
+			<button class="btn greenColor btn-lg rounded "  name="table_no" value="{{table_index}}">
+			<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-download" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+  <path fill-rule="evenodd" d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+</svg> 
+Download</button>
+
+		</div>
+		</div>
+		
+		
+		</div>
+	{%endfor%}
+</div>
+	<br/>
+	<br/>
+{% 	set download_mask_string="1"*(tables|length)  %}
+<input type="hidden" name="download_mask" value="{{download_mask_string}}" />
+	<center><button type="submit" class="wide btn greenColor btn-lg rounded" name="table_no" value="all">
+	<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-download" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+  <path fill-rule="evenodd" d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+</svg> 
+Download All</button></center>
+</form>
+{% else %}
+<p class="text-danger headFont"><b>{{msg}}<b></p>
+{%endif%}
+<script>
+$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip();   
+});
+</script>
+<script>
+if($("#uploaded_files_list li").length == 0){
+			$("#uploaded_files_list").hide();
+	}
+else{
+			$("#uploaded_files_list").show();
+	}
+</script>
+<script>
+$(".add_or_remove").change(function(){
+	var downloadMask=$("input[name='download_mask']").attr("value");
+	var index=parseInt($(this).attr("id").slice(1));
+	if($(this).prop(":checked")){
+		downloadMask=downloadMask.slice(0,index)+"1"+downloadMask.slice(index+1);
+	}
+	else{
+		downloadMask=downloadMask.slice(0,index)+"0"+downloadMask.slice(index+1);
+	}
+	$("input[name='download_mask']").attr("value",downloadMask)
+
+});
+</script>
+<script>
+if('{{isUploaded}}' && !'{{isExtracted}}' && !'{{isDisplayed}}'){
+	$('#extract-btn').removeClass("btn-secondary");
+	$('#extract-btn').addClass("blueColor");
+	$('#extract-btn').removeAttr("disabled");
+}
+</script>
+<script>
+if('{{isUploaded}}' && '{{isExtracted}}' && !'{{isDisplayed}}'){
+	$('#display-btn').removeClass("btn-secondary");
+	$('#display-btn').addClass("blueColor");
+	$('#display-btn').removeAttr("disabled");
+}
+</script>
+<script>
+if('{{isUploaded}}'){
+	$('#upload-btn').removeClass("blueColor");
+	$('#upload-btn').addClass("greenColor");
+	$('#upload-btn').html('<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check2" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg> Uploaded')
+}
+</script>
+<script>
+if('{{isExtracted}}'){
+	$('#extract-btn').removeClass("blueColor");
+	$('#extract-btn').addClass("greenColor");
+	$('#extract-btn').removeAttr("disabled");
+	$('#extract-btn').html('<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check2" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg> Extracted')
+}
+</script>
+<script>
+if('{{isDisplayed}}'){
+	$('#display-btn').removeClass("blueColor");
+	$('#display-btn').addClass("greenColor");
+	$('#display-btn').removeAttr("disabled");
+	$('#display-btn').html('<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check2" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg> Displayed')
+}
+</script>
+<script>    
+$('#display-btn').click(function(){
+		$('#display-btn').html("<span class='spinner-border spinner-border-md'></span> Displaying . .")
+});
+</script>
+<script>    
+$('#extract-btn').click(function(){
+		$('#extract-btn').html("<span class='spinner-border spinner-border-md'></span> Extracting . .")
+});
+</script>
+<script>    
+$('#upload-btn').click(function(){
+		$('#upload-btn').html("<span class='spinner-border spinner-border-md'></span> Uploading . .")
+});
+</script>
+<script>    
+$('input[type="file"]').change(function(e){
+        $("#uploaded_files_list").html("");
+		var file;
+		for(file of e.target.files){
+			$("#uploaded_files_list").append("<li>"+file.name+"</li>");
+			
+		}
+		if($("#uploaded_files_list li").length == 0){
+			$("#uploaded_files_list").hide();
+		}
+		else{
+			$("#uploaded_files_list").show();
+		}
+});
+</script>
+<script>
+$(document).ready(function(){
+	$("td").blur(function(){
+    		var id=$(this).attr("id");
+    		var inp=$("input[name="+id+"]");
+			if(inp.val() != $(this).text())
+			{
+				inp.val($(this).text());
+    		}   
+});
+});
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+</body>
+</html>
